@@ -12,10 +12,14 @@ This project showcases my work, technical skills, and provides a contact interfa
 - Next.js 14 (App Router)
 - TypeScript
 - Tailwind CSS
+- Light / Dark theme support
 
 ### Backend
 - C# (.NET 8 Minimal API)
+- Entity Framework Core
+- PostgreSQL
 - Swagger / OpenAPI
+- Docker
 - CORS configuration for frontend integration
 
 ---
@@ -23,21 +27,39 @@ This project showcases my work, technical skills, and provides a contact interfa
 ## 📁 Project Structure
 
 ```bash
-portfolio/
+portfolio-app/
 ├── backend/
-│ ├── Models/
-│ ├── Data/
-│ ├── Services/
-│ └── Program.cs
+│   ├── Models/
+│   ├── Data/
+│   ├── Migrations/
+│   ├── Program.cs
+│   └── appsettings.json
 ├── frontend/
-│ ├── app/
-│ ├── public/
-│ └── package.json
+│   ├── app/
+│   ├── components/
+│   ├── public/
+│   └── package.json
+├── docker-compose.yml
 └── README.md
 ```
 ---
 
 ## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (18+)
+- .NET SDK 8
+- Docker
+
+### Database (PostgreSQL via Docker)
+
+From the project root:
+
+```bash
+docker compose up -d
+```
+---
 
 ### Backend
 
@@ -83,11 +105,14 @@ http://localhost:3000
 
 ## 🧱 Current Features
 
-- Clean C# .NET Minimal API backend
-- Modern Next.js frontend foundation
+- API-driven projects section
+- PostgreSQL database persistance
+- EF Core migrations
+- Dockerized database
+- Light / Dark theme toggle
+- Modern responsive UI
 - Swagger API documentation
-- CORS-enabled frontend ↔ backend communication
-- Scalable folder structure for future growth
+- Clean monorepo structure
 
 
 ## 🗺 Roadmap
@@ -95,9 +120,9 @@ http://localhost:3000
 - [x] Project setup  
 - [x] Backend API foundation  
 - [x] Frontend foundation  
-- [ ] Projects page (dynamic data from backend)  
-- [ ] Contact form integration  
-- [ ] Database persistence  
+- [x] Dynamic projects from backend 
+- [x] Database persistence
+- [ ] Contact form integration   
 - [ ] Email notifications  
 - [ ] Deployment  
 

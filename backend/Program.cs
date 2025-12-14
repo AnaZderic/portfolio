@@ -1,58 +1,65 @@
 using backend.Data;
 using backend.Models;
-
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<PortfolioDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(MyAllowSpecificOrigins, policy =>
-    {
-        policy.WithOrigins("http://localhost:3000", "https://localhost:3000")
-        .AllowAnyHeader()
-        .AllowAnyMethod();
-    });
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+        policy => policy
+            .WithOrigins("http://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod());
 });
 
 var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-if (!app.Environment.IsDevelopment())
-{
-    app.UseHttpsRedirection();
-}
-
 app.UseCors(MyAllowSpecificOrigins);
 
-app.MapGet("/", () => "Backend is running!");
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<PortfolioDbContext>();
+    db.Database.Migrate();
+    ProjectSeeder.Seed(db);
+}
 
-app.MapGet("/api/projects", () => Results.Ok(ProjectData.Projects))
-.WithName("GetProjects");
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<PortfolioDbContext>();
+    if (!db.Database.CanConnect())
+        throw new Exception("Cannot connect to database!");
+}
 
-app.MapPost("/api/contact", (ContactRequest request) =>
+
+app.MapGet("/api/projects", async (PortfolioDbContext db) =>
+{
+    return Results.Ok(await db.Projects.ToListAsync());
+});
+
+
+app.MapPost("/api/contact", async (ContactMessage request, PortfolioDbContext db) =>
 {
     if (string.IsNullOrWhiteSpace(request.Name) ||
-    string.IsNullOrWhiteSpace(request.Email) ||
-    string.IsNullOrWhiteSpace(request.Message))
+        string.IsNullOrWhiteSpace(request.Email) ||
+        string.IsNullOrWhiteSpace(request.Message))
     {
         return Results.BadRequest(new { error = "All fields are required" });
     }
 
-    Console.WriteLine($"New contact: {request.Name} <{request.Email}>: {request.Message}");
-
-//TODO persistance
+    db.ContactMessages.Add(request);
+    await db.SaveChangesAsync();
 
     return Results.Ok(new { success = true });
-}).WithName("PostContact");
+});
+
+app.MapGet("/api/admin/contacts", async (PortfolioDbContext db) =>
+{
+    var messages = await db.ContactMessages.OrderByDescending(m => m.CreatedAt).ToListAsync();
+    return Results.Ok(messages);
+});
 
 app.Run();

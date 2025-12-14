@@ -7,12 +7,12 @@ import {
   SiTypescript,
   SiTailwindcss,
   SiDotnet,
-  SiSharp,
   SiPostgresql,
   SiHtml5,
   SiCss3,
   SiJavascript,
 } from "react-icons/si";
+import { FaNodeJs } from "react-icons/fa";
 
 interface TechIconProps {
   name: string;
@@ -32,6 +32,7 @@ export const TechIcon: React.FC<TechIconProps> = ({ name, className }) => {
     HTML: <SiHtml5 size={size} />,
     CSS: <SiCss3 size={size} />,
     JavaScript: <SiJavascript size={size} />,
+    "Node.js": <FaNodeJs size={size} />
   };
 
   return (
