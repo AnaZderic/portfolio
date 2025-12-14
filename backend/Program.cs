@@ -36,7 +36,7 @@ app.UseCors(MyAllowSpecificOrigins);
 
 app.MapGet("/", () => "Backend is running!");
 
-app.MapGet("/api/projects", () => ProjectData.Projects)
+app.MapGet("/api/projects", () => Results.Ok(ProjectData.Projects))
 .WithName("GetProjects");
 
 app.MapPost("/api/contact", (ContactRequest request) =>
