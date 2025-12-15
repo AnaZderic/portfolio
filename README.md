@@ -9,7 +9,7 @@ This project showcases my work, technical skills, and provides a contact interfa
 ## 🛠 Tech Stack
 
 ### Frontend
-- Next.js 14 (App Router)
+- Next.js 16 (App Router)
 - TypeScript
 - Tailwind CSS
 - Light / Dark theme support
@@ -37,8 +37,10 @@ portfolio-app/
 ├── frontend/
 │   ├── app/
 │   ├── components/
+│   ├── lib/
 │   ├── public/
 │   └── package.json
+│
 ├── docker-compose.yml
 └── README.md
 ```
@@ -97,10 +99,12 @@ http://localhost:3000
 
 ## 📡 API Endpoints
 
-| Method | Endpoint        | Description                       |
-|--------|-----------------|-----------------------------------|
-| GET    | /api/projects   | Retrieve portfolio projects       |
-| POST   | /api/contact    | Submit contact form message       |
+| Method | Endpoint                 | Description                 |
+| ------ | ------------------------ | --------------------------- |
+| GET    | /api/projects            | Retrieve portfolio projects |
+| POST   | /api/contact             | Submit contact message      |
+| GET    | /api/admin/contacts      | Admin: list messages        |
+| DELETE | /api/admin/contacts/{id} | Admin: delete message       |
 
 
 ## 🧱 Current Features
@@ -113,6 +117,10 @@ http://localhost:3000
 - Modern responsive UI
 - Swagger API documentation
 - Clean monorepo structure
+- Contact form with validation
+- Admin dashboard for contact messages
+- View submitted messages
+- Delete messages
 
 
 ## 🗺 Roadmap
@@ -122,7 +130,8 @@ http://localhost:3000
 - [x] Frontend foundation  
 - [x] Dynamic projects from backend 
 - [x] Database persistence
-- [ ] Contact form integration   
+- [x] Contact form integration 
+- [x] Admin dashboard  
 - [ ] Email notifications  
 - [ ] Deployment  
 

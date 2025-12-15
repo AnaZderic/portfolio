@@ -16,8 +16,17 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
 app.UseCors(MyAllowSpecificOrigins);
 
 using (var scope = app.Services.CreateScope())
@@ -40,6 +49,15 @@ app.MapGet("/api/projects", async (PortfolioDbContext db) =>
     return Results.Ok(await db.Projects.ToListAsync());
 });
 
+app.MapGet("/api/admin/contacts", async (PortfolioDbContext db) =>
+{
+    var messages = await db.ContactMessages
+        .OrderByDescending(m => m.CreatedAt)
+        .ToListAsync();
+
+    return Results.Ok(messages);
+})
+.WithName("GetContactMessages");
 
 app.MapPost("/api/contact", async (ContactMessage request, PortfolioDbContext db) =>
 {
@@ -56,10 +74,21 @@ app.MapPost("/api/contact", async (ContactMessage request, PortfolioDbContext db
     return Results.Ok(new { success = true });
 });
 
-app.MapGet("/api/admin/contacts", async (PortfolioDbContext db) =>
+app.MapDelete("/api/admin/contacts/{id:int}", async (
+    int id,
+    PortfolioDbContext db
+) =>
 {
-    var messages = await db.ContactMessages.OrderByDescending(m => m.CreatedAt).ToListAsync();
-    return Results.Ok(messages);
-});
+    var message = await db.ContactMessages.FindAsync(id);
+
+    if (message is null)
+        return Results.NotFound(new { error = "Message not found" });
+
+    db.ContactMessages.Remove(message);
+    await db.SaveChangesAsync();
+
+    return Results.Ok(new { success = true });
+})
+.WithName("DeleteContactMessage");
 
 app.Run();
