@@ -1,12 +1,14 @@
 ﻿using backend.Models;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace backend.Data;
 
 public static class ProjectSeeder
 {
-    public static void Seed(PortfolioDbContext db)
+    public static async Task Seed(PortfolioDbContext db)
     {
-        if (db.Projects.Any())
+        if (await db.Projects.AnyAsync())
             return;
 
         var projects = new List<Project>
@@ -42,7 +44,7 @@ public static class ProjectSeeder
             
         };
 
-        db.Projects.AddRange(projects);
-        db.SaveChanges();
+        await db.Projects.AddRangeAsync(projects);
+        await db.SaveChangesAsync();
     }
 }

@@ -1,6 +1,6 @@
 # Full-Stack Portfolio
 
-A modern full-stack developer portfolio built with **C# (.NET 8)** and **Next.js**.
+A modern full-stack developer portfolio built with **C# (.NET 10)** and **Next.js**.
 
 This project showcases my work, technical skills, and provides a contact interface powered by a custom backend API.
 
@@ -15,7 +15,7 @@ This project showcases my work, technical skills, and provides a contact interfa
 - Light / Dark theme support
 
 ### Backend
-- C# (.NET 8 Minimal API)
+- C# (.NET 10 Minimal API)
 - Entity Framework Core
 - PostgreSQL
 - Swagger / OpenAPI
@@ -51,7 +51,7 @@ portfolio-app/
 ### Prerequisites
 
 - Node.js (18+)
-- .NET SDK 8
+- .NET SDK 10
 - Docker
 
 ### Database (PostgreSQL via Docker)
@@ -134,6 +134,23 @@ http://localhost:3000
 - [x] Admin dashboard  
 - [ ] Email notifications  
 - [ ] Deployment  
+
+## 📝 Admin Usage
+
+The admin dashboard allows you to **view and manage submitted contact messages**.
+
+### Accessing the Admin Page
+
+- 🌐 **URL:** `http://localhost:3000/admin/messages`  
+- 🏗 **Layout:** Uses `AdminLayout` with `Navbar`; main content (`children`) displays messages fetched from the backend.
+
+### ✨ Features
+- 👀 **View Messages:** See all submitted contact messages.  
+- 🗑 **Delete Messages:** Remove any message (`DELETE /api/admin/contacts/{id}`).
+
+### ⚠️ Notes
+- 🔗 Data is fetched from backend endpoint `/api/admin/contacts`.  
+- ✅ Ensure backend is running at `http://localhost:5189` and CORS allows `http://localhost:3000`.
 
 ## 👤 Author
 

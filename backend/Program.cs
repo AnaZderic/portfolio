@@ -32,8 +32,8 @@ app.UseCors(MyAllowSpecificOrigins);
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<PortfolioDbContext>();
-    db.Database.Migrate();
-    ProjectSeeder.Seed(db);
+    await db.Database.MigrateAsync();
+    await ProjectSeeder.Seed(db);
 }
 
 using (var scope = app.Services.CreateScope())
