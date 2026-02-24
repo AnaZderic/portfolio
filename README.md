@@ -54,6 +54,14 @@ portfolio-app/
 - .NET SDK 10
 - Docker
 
+### Environment variables
+
+Copy .env.example to .env and adjust values if needed:
+
+```bash
+cp .env.example .env
+```
+
 ### Database (PostgreSQL via Docker)
 
 From the project root:
